@@ -89,7 +89,8 @@
         "locale": "cpp",
         "bitset": "cpp",
         "*.cpp-old": "cpp",
-        "__config": "cpp"
+        "__config": "cpp",
+        "print": "cpp"
     },
 
 }
