@@ -48,7 +48,7 @@ Window::Window(uvec2 _size, WindowHintsBitMask flags)
 #ifdef _DEBUG
     PFNGLDEBUGMESSAGECALLBACKKHRPROC glDebugMessageCallbackKHR =
         (PFNGLDEBUGMESSAGECALLBACKKHRPROC)glfwGetProcAddress("glDebugMessageCallbackKHR");
-    glfwSwapInterval(1);
+    glfwSwapInterval(0);
     if (glDebugMessageCallbackKHR)
     {
         std::cout << "glDebugMessageCallbackKHR is available!" << std::endl;
@@ -93,7 +93,7 @@ void Window::SwapAndPoll()
     glfwSwapBuffers(window_ptr);
 }
 
-auto Window::GetKey(int key)
+int Window::GetKey(int key)
 {
     return glfwGetKey(window_ptr,key);
 }

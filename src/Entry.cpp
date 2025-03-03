@@ -21,10 +21,10 @@ int main()
     shader->BindAttribLocation("a_position",0);
     shader->BindAttribLocation("a_texcoord",1);
     const vec2 quad_data[] = {
-    {-0.5f, 0.5f},       {0.0f, 1.0f}, // Top-left
-    { 0.5f, 0.5f},       {1.0f, 1.0f}, // Top-right
-    { 0.5f, -0.5f},      {1.0f, 0.0f}, // Bottom-right
-    {-0.5f, -0.5f},      {0.0f, 0.0f}  // Bottom-left
+    {-1, 1},       {0.0f, 1.0f}, // Top-left
+    { 1, 1},       {1.0f, 1.0f}, // Top-right
+    { 1, -1},      {1.0f, 0.0f}, // Bottom-right
+    {-1, -1},      {0.0f, 0.0f}  // Bottom-left
     };
     unsigned int quad_indicies[] = {
         0, 1, 2,  // First triangle: top-left, top-right, bottom-right
@@ -35,17 +35,29 @@ int main()
     std::make_shared<VertexArray>((void*)quad_data,sizeof(quad_data),attribs) ;
     vert_array->SetElementBuffer((void*)quad_indicies,sizeof(quad_indicies),GL_UNSIGNED_INT);
     OpenGL::GetInstance()->DepthTest(false);
-    glDisable(GL_CULL_FACE);
+
+    auto lastTime = std::chrono::high_resolution_clock::now();
+    int frameCount = 0;
     while (!window->ShouldClose() && window->GetKey(GLFW_KEY_ESCAPE) != GLFW_PRESS)
     {
-        glClear(GL_COLOR_BUFFER_BIT);
+        auto currentTime = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<float> deltaTime = currentTime - lastTime;
+        
         shader->Use();
-        
-        vert_array->Draw(6);
         vert_array->Draw(6);
 
-        
 
+        // If 1 second has passed, calculate and print framerate
+        if (deltaTime.count() >= 1.0f) {
+            float fps = frameCount / deltaTime.count();
+            std::cout << "FPS: " << fps << std::endl;
+            frameCount = 0;
+            lastTime = currentTime;
+        }
+
+        frameCount++;
+        
         window->SwapAndPoll();
+        
     }
 }
