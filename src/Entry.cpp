@@ -1,41 +1,51 @@
 
-//#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <iostream>
-GLFWwindow *window;
-GLFWmonitor *monitor;
-const GLFWvidmode *video_mode;
-
-void ERROR_CALLBACK(int code, const char *desc)
-{
-    std::cerr << code << " " << desc << "\n";
-}
+// #include <GL/glew.h>
+#include "Window.hpp"
+#include "Shader.hpp"
+#include "OpenGL.hpp"
+#include "VertexArray.hpp"
+#define FULLSCREEN 0
+#define DECORATED 1
+#define RESIZEABLE 1
 int main()
 {
 
-    glfwInit();
-    glfwSetErrorCallback(ERROR_CALLBACK);
-    monitor = glfwGetPrimaryMonitor();
-    video_mode = glfwGetVideoMode(monitor);
-   // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
-   glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_EGL_CONTEXT_API);
-glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
-glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    Window::Init({800, 480},
+                 WindowHints::eFULLSCREEN * FULLSCREEN |
+                     WindowHints::eDECORATED * DECORATED |
+                     WindowHints::eRESIZEABLE * RESIZEABLE);
 
-    window = glfwCreateWindow(video_mode->width, video_mode->height, "Barton Display", nullptr, nullptr);
-    std::cout << "hello\n";
+    std::shared_ptr<Window> window = Window::GetInstance();
 
-    glfwMakeContextCurrent(window);
-    int major, minor;
-    major = glfwGetWindowAttrib(window, GLFW_CONTEXT_VERSION_MAJOR);
-    minor = glfwGetWindowAttrib(window, GLFW_CONTEXT_VERSION_MINOR);
-    std::cout << "OpenGL ES Context Version: " << major << "." << minor << std::endl;
-    while (!glfwWindowShouldClose(window))
+    std::shared_ptr<Shader> shader = Shader::FromFiles("test.vert", "test.frag");
+    shader->BindAttribLocation("a_position",0);
+    shader->BindAttribLocation("a_texcoord",1);
+    const vec2 quad_data[] = {
+    {-0.5f, 0.5f},       {0.0f, 1.0f}, // Top-left
+    { 0.5f, 0.5f},       {1.0f, 1.0f}, // Top-right
+    { 0.5f, -0.5f},      {1.0f, 0.0f}, // Bottom-right
+    {-0.5f, -0.5f},      {0.0f, 0.0f}  // Bottom-left
+    };
+    unsigned int quad_indicies[] = {
+        0, 1, 2,  // First triangle: top-left, top-right, bottom-right
+        2, 3, 0   // Second triangle: bottom-right, bottom-left, top-left
+    };
+    const std::vector<VertexArrayAttrib> attribs = {{GL_FLOAT,2,false},{GL_FLOAT,2,false}};
+    std::shared_ptr<VertexArray> vert_array = 
+    std::make_shared<VertexArray>((void*)quad_data,sizeof(quad_data),attribs) ;
+    vert_array->SetElementBuffer((void*)quad_indicies,sizeof(quad_indicies),GL_UNSIGNED_INT);
+    OpenGL::GetInstance()->DepthTest(false);
+    glDisable(GL_CULL_FACE);
+    while (!window->ShouldClose())
     {
-        glfwPollEvents();
-    }
+        glClear(GL_COLOR_BUFFER_BIT);
+        shader->Use();
+        
+        vert_array->Draw(6);
+        vert_array->Draw(6);
 
-    glfwDestroyWindow(window);
-    glfwTerminate();
+        
+
+        window->SwapAndPoll();
+    }
 }

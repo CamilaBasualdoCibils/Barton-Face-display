@@ -10,10 +10,10 @@ project "Barton-face-display"
    targetdir "bin/%{cfg.buildcfg}"
    flags{"MultiProcessorCompile"}
 
-   links {"glfw" }
+   links {"glfw","GLESv2" }
    
    files { "src/**.h", "src/**.c","src/**.cpp"}
-   pchheader "pch.h"
+   pchheader "pch.hpp"
    includedirs {"src","lib"}
    libdirs {}
    --

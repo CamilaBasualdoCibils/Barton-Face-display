@@ -19,14 +19,14 @@ endif
 # #############################################
 
 RESCOMP = windres
-PCH = src/pch.h
+PCH = src/pch.hpp
 PCH_PLACEHOLDER = $(OBJDIR)/$(notdir $(PCH))
 GCH = $(PCH_PLACEHOLDER).gch
 INCLUDES += -Isrc -Ilib
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-LIBS += -lglfw
+LIBS += -lglfw -lGLESv2
 LDDEPS +=
 LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
 define PREBUILDCMDS
@@ -67,7 +67,15 @@ GENERATED :=
 OBJECTS :=
 
 GENERATED += $(OBJDIR)/Entry.o
+GENERATED += $(OBJDIR)/OpenGL.o
+GENERATED += $(OBJDIR)/Shader.o
+GENERATED += $(OBJDIR)/VertexArray.o
+GENERATED += $(OBJDIR)/Window.o
 OBJECTS += $(OBJDIR)/Entry.o
+OBJECTS += $(OBJDIR)/OpenGL.o
+OBJECTS += $(OBJDIR)/Shader.o
+OBJECTS += $(OBJDIR)/VertexArray.o
+OBJECTS += $(OBJDIR)/Window.o
 
 # Rules
 # #############################################
@@ -132,6 +140,18 @@ endif
 # #############################################
 
 $(OBJDIR)/Entry.o: src/Entry.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/OpenGL.o: src/OpenGL.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Shader.o: src/Shader.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/VertexArray.o: src/VertexArray.cpp
+	@echo "$(notdir $<)"
+	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Window.o: src/Window.cpp
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 
