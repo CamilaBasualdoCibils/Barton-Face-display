@@ -24,4 +24,5 @@ public:
     void SwapAndPoll();
     uvec2 Size() const {return size;}
     float AspectRatio() const {return size.y/size.x;}
+    auto GetKey(int key);
 };

@@ -36,7 +36,7 @@ int main()
     vert_array->SetElementBuffer((void*)quad_indicies,sizeof(quad_indicies),GL_UNSIGNED_INT);
     OpenGL::GetInstance()->DepthTest(false);
     glDisable(GL_CULL_FACE);
-    while (!window->ShouldClose())
+    while (!window->ShouldClose() && window->GetKey(GLFW_KEY_ESCAPE) != GLFW_PRESS)
     {
         glClear(GL_COLOR_BUFFER_BIT);
         shader->Use();
