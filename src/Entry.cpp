@@ -27,7 +27,7 @@ uint8_t quad_indicies[] = {
 int main(int argc, char **argv)
 {
 
-    Window::Init({480, 320},
+    Window::Init({800, 480},
                  WindowHints::eDECORATED * DECORATED |
                      WindowHints::eRESIZEABLE * RESIZEABLE
 #ifdef _RELEASE
