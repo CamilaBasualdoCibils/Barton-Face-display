@@ -35,6 +35,10 @@ Window::Window(uvec2 _size, WindowHintsBitMask flags)
     glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_RED_BITS, 5);
+    glfwWindowHint(GLFW_GREEN_BITS, 6);
+    glfwWindowHint(GLFW_BLUE_BITS, 5);
+    glfwWindowHint(GLFW_ALPHA_BITS, 0);
 #ifdef _DEBUG
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 #endif
