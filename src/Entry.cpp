@@ -9,7 +9,7 @@
 #define DECORATED 1
 #define RESIZEABLE 1
 
-#define RESOLUTION_SCALE 0.5f
+#define RESOLUTION_SCALE 0.10f
 const vec2 quad_data[] = {
     {-1, 1}, {0.0f, 1.0f}, // Top-left
     {1, 1},
@@ -27,7 +27,7 @@ uint8_t quad_indicies[] = {
 int main()
 {
 
-    Window::Init({800, 480},
+    Window::Init({480,320},
                  WindowHints::eDECORATED * DECORATED |
                      WindowHints::eRESIZEABLE * RESIZEABLE
 #ifdef _RELEASE
@@ -41,6 +41,9 @@ int main()
     //face_shader->BindAttribLocation("a_position", 0);
     //face_shader->BindAttribLocation("a_texcoord", 1);
     std::shared_ptr<Shader> resize_shader = Shader::FromFiles("Project.vert","Project.frag");
+
+    glReleaseShaderCompiler(); // NO MORE SHADER COMPILES AFTER THIS <========
+
 
     const std::vector<VertexArrayAttrib> attribs = {{GL_FLOAT, 2, false}, {GL_FLOAT, 2, false}};
 
