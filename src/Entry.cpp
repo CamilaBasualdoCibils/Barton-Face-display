@@ -62,6 +62,7 @@ int main()
 
         render_fbo->Use();
         face_shader->Use();
+        glUniform1f(0,(float)glfwGetTime());
         vert_array->Draw(6);
 
         // If 1 second has passed, calculate and print framerate
