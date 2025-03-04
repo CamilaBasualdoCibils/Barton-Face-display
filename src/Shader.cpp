@@ -61,6 +61,8 @@ std::shared_ptr<Shader> Shader::FromFiles(const std::string &vert_file_path, con
 {
 
     std::ifstream vert_file(pre_path+vert_file_path),frag_file(pre_path+frag_file_path);
+    if (!vert_file.is_open()) std::cerr << "Invalid Vertex file!" << vert_file_path << std::endl;
+    if (!frag_file.is_open()) std::cerr << "Invalid Fragment File!" << frag_file_path << std::endl;
     assert(vert_file.is_open()&&"Invalid Vertex File");
     assert(frag_file.is_open()&&"Invalid Fragment File");
     std::string vert_source((std::istreambuf_iterator<char>(vert_file)), std::istreambuf_iterator<char>()),
