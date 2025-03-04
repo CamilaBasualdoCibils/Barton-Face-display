@@ -24,8 +24,12 @@ uint8_t quad_indicies[] = {
     2, 3, 0  // Second triangle: bottom-right, bottom-left, top-left
 };
 
-int main()
+int main(int argc, char** argv)
 {
+    float resolution_scale = RESOLUTION_SCALE;
+    if (argc >=2) {
+        resolution_scale = std::stof(argv[1]);
+    }
 
     Window::Init({480,320},
                  WindowHints::eDECORATED * DECORATED |
@@ -56,7 +60,7 @@ int main()
 
     auto lastTime = std::chrono::high_resolution_clock::now();
     int frameCount = 0;
-    std::shared_ptr<Framebuffer_Low> render_fbo = std::make_shared<Framebuffer_Low>((vec2)window->Size()* RESOLUTION_SCALE);
+    std::shared_ptr<Framebuffer_Low> render_fbo = std::make_shared<Framebuffer_Low>((vec2)window->Size()* resolution_scale);
 
     while (!window->ShouldClose() && window->GetKey(GLFW_KEY_ESCAPE) != GLFW_PRESS)
     {
