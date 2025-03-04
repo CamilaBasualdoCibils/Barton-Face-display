@@ -1,5 +1,5 @@
 #version 100
-precision mediump float;
+precision lowp float;
 
 varying vec2 v_texCoord;
 vec4 out_color;

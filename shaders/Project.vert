@@ -1,5 +1,5 @@
 #version 100
-precision mediump float;
+precision lowp float;
 
 attribute vec2 a_position; // Position of each vertex
 attribute vec2 a_texCoord; // Texture coordinate for each vertex

@@ -28,7 +28,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "Build Editor"
+            "preLaunchTask": "Build Debug"
         },
         {
             "name": "Launch Release",
